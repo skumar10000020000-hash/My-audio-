@@ -18,14 +18,14 @@ audio{width:100%;margin-top:20px}
 <div class="card">
 <h2>🎵 My Audio</h2>
 <p>Play दबाएँ, फिर स्क्रीन लॉक करके देखें।</p>
-<audio id="player" controls preload="metadata">
+<audio id="player" controls autoplay preload="metadata">
   <source src="audio.mp3" type="audio/mpeg">
 </audio>
 <div class="small">Lock-screen media controls आपके फोन/ब्राउज़र के support पर निर्भर हैं।</div>
 </div>
 <script>
 const p=document.getElementById('player');
-
+document.body.style.pointerEvents
 if ('mediaSession' in navigator) {
   navigator.mediaSession.metadata = new MediaMetadata({
     title:'My Audio',
