@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.json">
+<title>My Audio Player</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#111827;color:white;display:grid;place-items:center;min-height:100vh;margin:0}
+.card{width:min(90%,420px);padding:28px;border-radius:22px;background:#1f2937;text-align:center;box-sizing:border-box}
+button{font-size:18px;padding:14px 28px;border:0;border-radius:999px;cursor:pointer}
+audio{width:100%;margin-top:20px}
+.small{opacity:.75;font-size:13px;margin-top:16px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>🎵 My Audio</h2>
+<p>Play दबाएँ, फिर स्क्रीन लॉक करके देखें।</p>
+<audio id="player" controls preload="metadata">
+  <source src="audio.mp3" type="audio/mpeg">
+</audio>
+<div class="small">Lock-screen media controls आपके फोन/ब्राउज़र के support पर निर्भर हैं।</div>
+</div>
+<script>
+const p=document.getElementById('player');
+
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title:'My Audio',
+    artist:'Audio Player'
+  });
+  navigator.mediaSession.setActionHandler('play',()=>p.play());
+  navigator.mediaSession.setActionHandler('pause',()=>p.pause());
+  try { navigator.mediaSession.setActionHandler('seekbackward',()=>p.currentTime=Math.max(0,p.currentTime-10)); } catch(e){}
+  try { navigator.mediaSession.setActionHandler('seekforward',()=>p.currentTime=Math.min(p.duration||Infinity,p.currentTime+10)); } catch(e){}
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
